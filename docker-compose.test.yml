@@ -69,11 +69,11 @@ services:
     depends_on:
       - users
       - content
-    ports:
-      - 8080:8000
     environment:
       - RUST_LOG=router_microservice=debug
       - RUST_BACKTRACE=1
       - ROUTER_ADDRESS=0.0.0.0:8000
       - ROUTER_USERS=http://users:8000
       - ROUTER_CONTENT=http://content:8000
+    ports:
+      - 8080:8000

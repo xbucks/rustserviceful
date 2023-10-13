@@ -12,3 +12,5 @@ RUN rm ./target/debug/deps/mails_microservice*
 RUN cargo build
 
 CMD ["./target/debug/mails-microservice"]
+
+EXPOSE 8000
