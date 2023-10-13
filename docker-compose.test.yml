@@ -5,18 +5,18 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - 5432:5432
   smtp:
     image: juanluisbaptiste/postfix
     restart: always
     environment:
-      - SMTP_SERVER=smtp.example.com
-      - SMTP_USERNAME=admin@example.com
-      - SMTP_PASSWORD=password
-      - SERVER_HOSTNAME=smtp.example.com
+      - SMTP_SERVER=${SMTP_SERVER}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - SERVER_HOSTNAME=${SERVER_HOSTNAME}
     ports:
       - "2525:25"
   dbsync:
@@ -26,7 +26,7 @@ services:
     environment:
       - RUST_LOG=dbsync_worker=debug
       - RUST_BACKTRACE=1
-      - DBSYNC_DATABASE=postgresql://postgres:password@db:5432
+      - DBSYNC_DATABASE=postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@{POSTGRES_DATABASE}:5432
   mails:
     build: ./microservices/mails
     depends_on:
@@ -46,7 +46,7 @@ services:
       - RUST_LOG=users_microservice=debug
       - RUST_BACKTRACE=1
       - USERS_ADDRESS=0.0.0.0:8000
-      - USERS_DATABASE=postgresql://postgres:password@db:5432
+      - USERS_DATABASE=postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@{POSTGRES_DATABASE}:5432
     depends_on:
       - dbsync
       - mails
@@ -63,7 +63,7 @@ services:
       - RUST_BACKTRACE=1
       - ROCKET_ADDRESS=0.0.0.0
       - ROCKET_PORT=8000
-      - ROCKET_DATABASES={postgres_database={url="postgresql://postgres:password@db:5432"}}
+      - ROCKET_DATABASES={postgres_database={url="postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@{POSTGRES_DATABASE}:5432"}}
   router:
     build: ./microservices/router
     depends_on:
