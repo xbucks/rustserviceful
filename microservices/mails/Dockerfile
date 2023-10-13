@@ -1,4 +1,4 @@
-FROM rust:nightly
+FROM rust:1.61 As builder
 
 RUN USER=root cargo new --bin mails-microservice
 WORKDIR /mails-microservice
@@ -12,3 +12,5 @@ RUN rm ./target/debug/deps/mails_microservice*
 RUN cargo build
 
 CMD ["./target/debug/mails-microservice"]
+
+EXPOSE 8000

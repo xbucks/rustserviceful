@@ -1,4 +1,4 @@
-FROM rust:nightly
+FROM rust:1.61 As builder
 
 RUN USER=root cargo new --bin dbsync-worker
 WORKDIR /dbsync-worker
